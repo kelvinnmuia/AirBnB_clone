@@ -22,8 +22,8 @@ The console is a custom command line interpreter that will be used for managing 
 	$ ./console.py
 	(hbnb) help
 
-	\#Documented commands (type help <topic>):#\
-	========================================
+	\#Documented commands (type help <topic>):
+	========================================#\
 	EOF  help  quit
 
 	(hbnb) 
