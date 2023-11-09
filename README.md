@@ -1,4 +1,4 @@
-# **0x00. AirBnB clone - The console**
+# **Project Title: 0x00. AirBnB clone - The console**
 # **The console**
 Is the command line interpreter useful for managing the AirBnB objects in the following ways:
 
