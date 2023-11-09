@@ -1,2 +1,3 @@
 # **0x00. AirBnB clone - The console**
-[Link to Portfolio Website](https://gaganpreetkaurkalsi.netlify.app/)
+# **The console**
+is the command line interpreter useful for managing my AirBnB objects
