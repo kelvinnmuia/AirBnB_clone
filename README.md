@@ -48,3 +48,20 @@ Documented commands (type help <topic>):
 EOF  help  quit
 (hbnb)
 ```
+
+#### **Option 2: Starting With A File of Commands**
+
+You can also pipe in a file with one command per line, as seen below
+
+```
+$ cat test_help
+help
+$
+$ cat test_help | ./console.py
+(hbnb)
+
+Documented commands (type help <topic>):
+========================================
+EOF  help  quit
+(hbnb)
+```
