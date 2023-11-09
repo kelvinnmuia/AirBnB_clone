@@ -11,7 +11,7 @@ The console is a custom command line interpreter that will be used for managing 
 ### **1. Starting and Using The Interpreter in Interactive Mode**
 1. Run ./console on your terminal to launch the Command Interpreter
 2. Type help to get the list of all the available commands in the Command Interpreter
-3. Type Quit to exit the Command Interpreter
+3. Type Quit to exit the Command Interpreter<br/>
 	$ ./console.py
 	(hbnb) help
 
