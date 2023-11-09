@@ -32,3 +32,19 @@ EOF  help  quit
 (hbnb) quit
 $
 ```
+
+### **B. Starting and Using The Interpreter In Non-Interactive Mode**
+
+#### **Option 1: Starting By The Use of "echo"**
+
+This entails "piping" an input into the command with the use of `echo`, as shown below
+
+```
+$ echo "help" | ./console.py
+(hbnb)
+
+Documented commands (type help <topic>):
+========================================
+EOF  help  quit
+(hbnb)
+```
