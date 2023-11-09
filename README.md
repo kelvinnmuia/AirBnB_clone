@@ -19,14 +19,14 @@ The console is a custom command line interpreter that will be used for managing 
 2. Type help to get the list of all the available commands in the Command Interpreter
 3. Type Quit to exit the Command Interpreter
 
-> $ ./console.py
-(hbnb) help
+		$ ./console.py
+		(hbnb) help
 
-Documented commands (type help <topic>):
-========================================
-EOF  help  quit
+		Documented commands (type help <topic>):
+		========================================
+		EOF  help  quit
 
-(hbnb) 
-(hbnb) 
-(hbnb) quit
-$
+		(hbnb) 
+		(hbnb) 
+		(hbnb) quit
+		$
