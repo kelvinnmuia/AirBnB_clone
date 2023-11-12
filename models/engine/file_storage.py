@@ -6,6 +6,7 @@ defines the FileStorage class
 from json import loads, dumps
 from os.path import exists
 
+
 class FileStorage():
     """
     serializes instances to a JSON file and

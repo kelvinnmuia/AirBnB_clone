@@ -316,5 +316,6 @@ class HBNBCommand(cmd.Cmd):
             method(arguments)
         return
 
+
 if __name__ == "__main__":
     HBNBCommand().cmdloop()

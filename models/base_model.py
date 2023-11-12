@@ -11,7 +11,7 @@ class BaseModel:
     """
     defines the common methods and attributes of the other classes
     """
-    
+
     def __init__(self, *args, **kwargs):
         """
         instantiates the BaseModel class
@@ -20,7 +20,8 @@ class BaseModel:
             when the dictionary is provided, dictionary values are used
 
         Common Attributes:
-            id (str): to be assigned with uuid.uuid4() and converted to a string
+            id (str): to be assigned with uuid.uuid4()
+            and converted to a string
             created_at: to be assigned datetime
             updated_at: assigned with datetime whenever each object is changed
         """
@@ -71,5 +72,3 @@ class BaseModel:
                 dict_rep[key] = value
         dict_rep["__class__"] = type(self).__name__
         return dict_rep
-
-
