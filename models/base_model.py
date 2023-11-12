@@ -1,29 +1,28 @@
 #!/usr/bin/python3
 """
-defines the BaseModel class
+    defines BaseModel class
 """
+from models import storage
 from uuid import uuid4
 from datetime import datetime
-from models import storage
 
 
 class BaseModel:
     """
-    defines the common methods and attributes of the other classes
+        defines all common attributes/methods for other classes
     """
 
     def __init__(self, *args, **kwargs):
         """
-        instantiates the BaseModel class
+        Instantiates the BaseModel class
 
-        NB:
-            when the dictionary is provided, dictionary values are used
+        Note:
+            If a dictionary is provided, dictionary values are used
 
-        Common Attributes:
-            id (str): to be assigned with uuid.uuid4()
-            and converted to a string
-            created_at: to be assigned datetime
-            updated_at: assigned with datetime whenever each object is changed
+        Attributes:
+            id (str): will be assigned with uuid.uuid4() converted to string
+            created_at: will be assigned datetime
+            updated_at: assigned with datetime each object is changed
         """
         if len(kwargs) != 0:
             for key, value in kwargs.items():
@@ -51,16 +50,26 @@ class BaseModel:
         """
         saves class into storage
 
-        NB:
-            used to update the public instance attribute
-            'updated_at' with the current datetime
+        Note:
+            'updated_at' attribute is updated on save
         """
         self.updated_at = datetime.now()
         storage.save()
 
+        """ print('THIS IS OLD DICT')
+        print(old_dict['BaseModel.{}'.format(self.id)])
+
+        old_obj = old_dict['BaseModel.{}'.format(self.id)]
+        print('I am BaseModel {}'.format(self.id))
+        print('I am Old BaseModel {}'.format(old_obj['id']))
+        """
+
     def to_dict(self):
         """
-        returns dictionary representation of an instance
+        returns a dictionary representation of instance
+
+        Note:
+            times are stored in ISO format
         """
         dict_rep = {}
         time_format = datetime.isoformat

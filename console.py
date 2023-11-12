@@ -1,30 +1,24 @@
 #!/usr/bin/python3
 """
-creating the command line interpreter
+Creating command interpreter
 """
-import sys
 import cmd
+import sys
+from models.engine.known_objects import classes, console_methods
 from models import storage
-from models.engine.known_objects import console_methods, classes
 
 
 class HBNBCommand(cmd.Cmd):
-    """
-    Uses cmd methods to control the command interpreter
-    """
-    # The custom command interpreter prompt
+    """ Uses cmd methods to control command interpreter """
+    # custom prompt:
     prompt = '(hbnb) '
 
     def do_quit(self, arg):
-        """
-        Quit command for exiting the program
-        """
+        """ Quit command to exit the program """
         return True
 
     def do_EOF(self, arg):
-        """
-        EOF command for exiting the program
-        """
+        """ EOF command to exit the program """
         self.non_interactive_check()
         return True
 
@@ -34,17 +28,16 @@ class HBNBCommand(cmd.Cmd):
             print("")
 
     def emptyline(self):
-        """
-        Does nothing, re-prompts
-        """
+        """ Does nothing, re-prompts """
         self.non_interactive_check()
         pass
 
     def do_create(self, arguments):
         """
-        creates a new instance of a class
+        Creates a new instance of a class
         saves it (to the JSON file)
-        and prints the id
+        and prints the id.
+            Ex: $ create BaseModel
         """
         self.non_interactive_check()
         args = self.arg_string_parse(arguments)
@@ -57,8 +50,9 @@ class HBNBCommand(cmd.Cmd):
 
     def do_show(self, arguments):
         """
-        prints the string representation of an instance
+        Prints the string representation of an instance
         based on the class name and id.
+        Ex: $ show BaseModel 1234-1234-1234.
         """
         self.non_interactive_check()
         args = self.arg_string_parse(arguments)
@@ -71,9 +65,9 @@ class HBNBCommand(cmd.Cmd):
         print(__objects[key])
 
     def do_destroy(self, arguments):
-        """
-        Deletes an instance based on the class name and id
+        """ Deletes an instance based on the class name and id
         (save the change into the JSON file).
+        Ex: $ destroy BaseModel 1234-1234-1234.
         """
         self.non_interactive_check()
         args = self.arg_string_parse(arguments)
@@ -88,8 +82,9 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, arguments):
         """
-        prints all string representation of all instances
+        Prints all string representation of all instances
         based on the class name or not.
+        Ex: $ all BaseModel or $ all.
         """
         self.non_interactive_check()
         args = self.arg_string_parse(arguments)
@@ -99,7 +94,6 @@ class HBNBCommand(cmd.Cmd):
             for obj in __objects:
                 print_string = "{}".format(__objects[obj].__str__())
                 print_list.append(print_string)
-
         else:
             if self.not_a_class(args["cls_name"]):
                 return
@@ -107,12 +101,13 @@ class HBNBCommand(cmd.Cmd):
                 if obj.split(".")[0] == args["cls_name"]:
                     print_string = "{}".format(__objects[obj].__str__())
                     print_list.append(print_string)
-            print(print_list)
+        print(print_list)
 
     def do_update(self, arguments):
         """
-        Update an instance based on the class name and id
+        Updates an instance based on the class name and id
         adds or updates attribute and saves the change into the JSON file
+        Ex: update BaseModel 1234-1234-1234 email "aibnb@holbertonschool.com".
         """
         self.non_interactive_check()
         args = self.arg_string_parse(arguments)
@@ -131,7 +126,15 @@ class HBNBCommand(cmd.Cmd):
     @staticmethod
     def arg_string_parse(arguments):
         """
-        splits input string of arguments
+        Splits input string of arguments
+        arg order determines type of argument
+        and arguments are space delimited
+
+        Expected order:
+        0. class name
+        1. instance id
+        2. attribute name
+        3. attribute value
         """
         arg_list = arguments.split()
         args = {}
@@ -156,8 +159,8 @@ class HBNBCommand(cmd.Cmd):
     @staticmethod
     def not_a_class(cls_name):
         """
-        checks if the given class name argument
-        prints error message if invalid or missing
+        Checks if given valid class name argument
+        Prints error message if missing or invalid
         """
         if cls_name is None:
             print("** class name missing **")
@@ -170,8 +173,8 @@ class HBNBCommand(cmd.Cmd):
     @staticmethod
     def not_an_instance(cls_name, inst_id):
         """
-        checks if the given instance id argument
-        prints error message if invalid or missing
+        Checks if given valid instance id argument
+        Prints error message if missing or invalid
         """
         if inst_id is None:
             print("** instance id missing **")
@@ -186,8 +189,10 @@ class HBNBCommand(cmd.Cmd):
     @staticmethod
     def not_an_attribute(attr_name):
         """
-        checks if the given attribute name argument
-        prints error message if misssing
+        Checks if given attribute name argument
+        Prints error message if missing
+        If exists, attr_name is assumed to be valid
+            for this model
         """
         if attr_name is None:
             print("** attribute name missing **")
@@ -197,8 +202,10 @@ class HBNBCommand(cmd.Cmd):
     @staticmethod
     def not_a_value(attr_value):
         """
-        checks if the given attrubute value argument
-        prints error message if missing
+        Checks if given attribute value argument
+        Prints error message if missing
+        If exists, attr_valid is assumed to be valid
+            for this model, but may require type casting
         """
         if attr_value is None:
             print("** value missing **")
@@ -207,57 +214,65 @@ class HBNBCommand(cmd.Cmd):
 
     def default(self, line):
         """
-        The default behavior for unknown commands
+        Default behavior for unknown commands.
+        Verifies if input is in the format:
+            * <class name>.<console method>
+
+        Note:
+            If input doesn't fit the format, or the class and method don't
+            exist, an error message is printed to the user
         """
 
         try:
-            # split input string based on the first . character
+            # split based only on first . character
             arg_list = line.split('.', 1)
-            # store the cls_name in a dictionary
+            # create a dictionary and store the cls_name
             args = {}
             args["cls_name"] = arg_list[0]
-            # split the remaining string based on the first ( character
+            # split rest of string based only on first ( character
             arg_list = arg_list[1].split('(', 1)
             args["method"] = arg_list[0]
-            # split arguments such as attr_value, attr_name,
-            # and instance id, when given
+            # split arguments like inst_id, attr_name, and attr_value, if given
             if arg_list[1] == ")":
                 arg_list = []
             else:
-                # split off inst id and check whether arguments are dictionary
+                # split off instance id and check if arguments are dictionary
                 arg_check = arg_list[1].split(', ', 1)
                 if len(arg_check) > 1:
-                    # send to special parsing method, if it's dictionary
+                    # if dictionary, send to special parsing method
                     if arg_check[1][0] == '{' and args["method"] == "update":
                         arg_string = args["cls_name"]
                         arg_string += " " + arg_check[0] + " " + arg_check[1]
                         self.update_dictionary(arg_string)
                         return
-                    # keep parsing if not a dictionary
-                    arg_string = arg_check[0]
-                    if len(arg_check) > 1:
-                        arg_string += ", " + arg_check[1]
-                    arg_list = arg_string.split(', ')
-                    # cuts off last ) character
-                    arg_list[-1] = arg_list[-1][:-1]
-                    # splicing first and last "" characters
-                    if len(arg_list) >= 1:
-                        args["inst_id"] = arg_list[0][1:-1]
-                    else:
-                        args["inst_id"] = None
-                    if len(args_list) >= 2:
-                        args["attr_name"] = arg_list[2][1:-1]
-                    else:
-                        args["attr_value"] = None
-
-        except Exception as err:
+                # if not a dictionary, keep parsing
+                arg_string = arg_check[0]
+                if len(arg_check) > 1:
+                    arg_string += ", " + arg_check[1]
+                arg_list = arg_string.split(', ')
+                # chops off last ) character
+                arg_list[-1] = arg_list[-1][:-1]
+            # all code below splices off first and last "" characters
+            if len(arg_list) >= 1:
+                args["inst_id"] = arg_list[0][1:-1]
+            else:
+                args["inst_id"] = None
+            if len(arg_list) >= 2:
+                args["attr_name"] = arg_list[1][1:-1]
+            else:
+                args["attr_name"] = None
+            if len(arg_list) >= 3:
+                args["attr_value"] = arg_list[2][1:-1]
+            else:
+                args["attr_value"] = None
+        except:
             self.non_interactive_check()
             print("** Unknown syntax: " + line)
             return
 
-        # verify method validity
+        # validate method
         if args["method"] not in console_methods:
-            print("** Unsupported method: " + args["method"] + " **")
+            print("** unsupported method: " + args["method"] + " **")
             return
         if args["method"] == "count":
             method = getattr(self, args["method"])
@@ -280,9 +295,8 @@ class HBNBCommand(cmd.Cmd):
 
     @staticmethod
     def count(cls_name):
-        """
-        Returns the number of instances of cls_name
-        """
+        """ Returns the number of instances of cls_name """
+
         count = 0
         for id, instance in storage.all().items():
             if id.split('.')[0] == cls_name:
@@ -291,31 +305,32 @@ class HBNBCommand(cmd.Cmd):
 
     def update_dictionary(self, arguments):
         """
-        runs and parse update method for dictionary arguments
+        Parses and runs update method for dictionary args
+        for each attribute name/value pair
         """
-        # spliting off the class name and instance id
+        # split off class name and instance id
         arg_list = arguments.split(" ", 2)
         args = {}
-        args["ls_name"] = arg_list[0]
+        args["cls_name"] = arg_list[0]
         args["inst_id"] = arg_list[1][1:-1]
-        # chopping off dictionary {} and closing ) characters
-        dict_string = arg_list[2][1: -2]
-        # spliting the key/value pairs into list of strings
+        # cut off dictionary {} and closing ) characters
+        dict_string = arg_list[2][1:-2]
+        # split the key/value pairs into list of strings
         dictionary = dict_string.split(", ")
         method = getattr(self, "do_update")
-        # loop through each key/value pair
+        # for each key/value pair in list
         for i in range(len(dictionary)):
             arguments = args["cls_name"] + " " + args["inst_id"] + " "
+            # split key and value and set as strings to be added to arguments
             dict_kv = dictionary[i].split(": ")
             args["attr_name"] = dict_kv[0][1:-1]
             if dict_kv[1][0] == "'" and dict_kv[1][-1] == "'":
                 dict_kv[1] = dict_kv[1][1:-1]
             args["attr_value"] = dict_kv[1]
             arguments += args["attr_name"] + " " + args["attr_value"]
-            # passing arguments to the update method
+            # pass arguments to update method
             method(arguments)
         return
-
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
