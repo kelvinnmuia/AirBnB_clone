@@ -35,9 +35,6 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, arguments):
         """
         Creates a new instance of a class
-        saves it (to the JSON file)
-        and prints the id.
-            Ex: $ create BaseModel
         """
         self.non_interactive_check()
         args = self.arg_string_parse(arguments)
@@ -52,7 +49,6 @@ class HBNBCommand(cmd.Cmd):
         """
         Prints the string representation of an instance
         based on the class name and id.
-        Ex: $ show BaseModel 1234-1234-1234.
         """
         self.non_interactive_check()
         args = self.arg_string_parse(arguments)
@@ -66,8 +62,6 @@ class HBNBCommand(cmd.Cmd):
 
     def do_destroy(self, arguments):
         """ Deletes an instance based on the class name and id
-        (save the change into the JSON file).
-        Ex: $ destroy BaseModel 1234-1234-1234.
         """
         self.non_interactive_check()
         args = self.arg_string_parse(arguments)
@@ -84,7 +78,6 @@ class HBNBCommand(cmd.Cmd):
         """
         Prints all string representation of all instances
         based on the class name or not.
-        Ex: $ all BaseModel or $ all.
         """
         self.non_interactive_check()
         args = self.arg_string_parse(arguments)
@@ -106,8 +99,6 @@ class HBNBCommand(cmd.Cmd):
     def do_update(self, arguments):
         """
         Updates an instance based on the class name and id
-        adds or updates attribute and saves the change into the JSON file
-        Ex: update BaseModel 1234-1234-1234 email "aibnb@holbertonschool.com".
         """
         self.non_interactive_check()
         args = self.arg_string_parse(arguments)
@@ -127,14 +118,6 @@ class HBNBCommand(cmd.Cmd):
     def arg_string_parse(arguments):
         """
         Splits input string of arguments
-        arg order determines type of argument
-        and arguments are space delimited
-
-        Expected order:
-        0. class name
-        1. instance id
-        2. attribute name
-        3. attribute value
         """
         arg_list = arguments.split()
         args = {}
@@ -190,9 +173,7 @@ class HBNBCommand(cmd.Cmd):
     def not_an_attribute(attr_name):
         """
         Checks if given attribute name argument
-        Prints error message if missing
-        If exists, attr_name is assumed to be valid
-            for this model
+        Prints an error if the given name is missing
         """
         if attr_name is None:
             print("** attribute name missing **")
@@ -204,8 +185,6 @@ class HBNBCommand(cmd.Cmd):
         """
         Checks if given attribute value argument
         Prints error message if missing
-        If exists, attr_valid is assumed to be valid
-            for this model, but may require type casting
         """
         if attr_value is None:
             print("** value missing **")
@@ -215,12 +194,6 @@ class HBNBCommand(cmd.Cmd):
     def default(self, line):
         """
         Default behavior for unknown commands.
-        Verifies if input is in the format:
-            * <class name>.<console method>
-
-        Note:
-            If input doesn't fit the format, or the class and method don't
-            exist, an error message is printed to the user
         """
 
         try:
@@ -250,7 +223,7 @@ class HBNBCommand(cmd.Cmd):
                 if len(arg_check) > 1:
                     arg_string += ", " + arg_check[1]
                 arg_list = arg_string.split(', ')
-                # chops off last ) character
+                # cuts off last ) character
                 arg_list[-1] = arg_list[-1][:-1]
             # all code below splices off first and last "" characters
             if len(arg_list) >= 1:
@@ -270,7 +243,7 @@ class HBNBCommand(cmd.Cmd):
             print("** Unknown syntax: " + line)
             return
 
-        # validate method
+        # verifies the method validity
         if args["method"] not in console_methods:
             print("** unsupported method: " + args["method"] + " **")
             return
@@ -331,6 +304,7 @@ class HBNBCommand(cmd.Cmd):
             # pass arguments to update method
             method(arguments)
         return
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
