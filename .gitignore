@@ -1,0 +1,6 @@
+NB
+file.JSON
+*~
+*__pycache__*
+models/__pycache__
+models/engine/__pycache__
