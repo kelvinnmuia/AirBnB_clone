@@ -1,18 +1,16 @@
 #!/usr/bin/python3
-"""
-defines the city class
-"""
+""" City Module for HBNB project """
+from models.base_model import BaseModel, Base
+from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.orm import relationship
 
-from models.base_model import BaseModel
 
-
-class City(BaseModel):
-    """
-    The City Class
-
-    class Attributes:
-        name (str): name of city
-        state_id (str): State's id where the city is located
-    """
-    name = ""
-    state_id = ""
+class City(BaseModel, Base):
+    """ The city class, contains state ID and name """
+    __tablename__ = 'cities'
+    name = Column(String(128),
+                  nullable=False)
+    state_id = Column(String(60),
+                      ForeignKey('states.id'),
+                      nullable=False)
+    places = relationship("Place", cascade="all, delete", backref="cities")
