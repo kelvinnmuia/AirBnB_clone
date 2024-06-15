@@ -1,7 +1,8 @@
 # **Project Title: 0x00. AirBnB clone - The console**
-## The Domains/Concepts covered in this project: `Python` `OOP`
 
-**Background Context**
+The Domains/Concepts covered in this project: `Python` `OOP`
+
+## Background Context
 
 **Welcome to the AirBnB clone project!**
 Before starting, please read the **AirBnB** concept page.
